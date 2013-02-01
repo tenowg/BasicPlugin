@@ -61,7 +61,7 @@ public class Turtle extends Living implements Passive {
 		dropComponent.addXpDrop((short) (getRandom().nextInt(3) + 1));
 
 		if (getAttachedCount() == 1) {
-			getOwner().add(HealthComponent.class).setSpawnHealth(8);
+			getOwner().add(HealthComponent.class).setSpawnHealth(10);
 		}
 	}
 	
