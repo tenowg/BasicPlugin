@@ -1,0 +1,9 @@
+Name: "Skeleton"
+Components:
+    - org.spout.engine.entity.component.EntityRendererComponent
+    - com.thedemgel.basicplugin.component.living.passive.Turtle
+Data:
+    Health: 20
+    Damages: 1
+    Size: 3
+    Model: model://BasicPlugin/entities/turtle/turtle.spm
