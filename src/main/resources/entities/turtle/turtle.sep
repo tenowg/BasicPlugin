@@ -1,4 +1,4 @@
-Name: "Skeleton"
+Name: "Turtle"
 Components:
     - org.spout.engine.entity.component.EntityRendererComponent
     - com.thedemgel.basicplugin.component.living.passive.Turtle

@@ -51,6 +51,7 @@
             <groupId>org.spout</groupId>
             <artifactId>vanilla</artifactId>
             <version>${vanillaVersion}</version>
+            <type>jar</type>
         </dependency>
     </dependencies>
     <build>

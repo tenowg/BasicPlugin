@@ -12,7 +12,6 @@ import org.spout.api.event.Order;
 import org.spout.api.event.engine.EngineStartEvent;
 import org.spout.api.event.player.PlayerJoinEvent;
 import org.spout.api.plugin.Platform;
-import org.spout.vanilla.plugin.component.player.HUDComponent;
 
 /**
  *

@@ -5,30 +5,31 @@ import java.awt.Color;
 import org.spout.api.gui.Widget;
 import org.spout.api.gui.component.RenderPartsHolderComponent;
 import org.spout.api.gui.render.RenderPart;
+import org.spout.api.gui.render.RenderPartPack;
 import org.spout.api.math.Rectangle;
-import org.spout.vanilla.plugin.component.player.HUDComponent;
-import org.spout.vanilla.plugin.component.player.hud.ExpBarWidget;
+import org.spout.vanilla.component.player.HUDComponent;
+import org.spout.vanilla.component.player.hud.ExpBarWidget;
 
 public class BasicExpWidget extends ExpBarWidget {
+	private RenderPartPack expPack = new RenderPartPack(BasicRenderMaterials.ARMOR_MATERIAL);
 
 	@Override
 	public void init(Widget armor, HUDComponent hud) {
 		super.init(armor, hud);
-		// Experience bar
 		final RenderPartsHolderComponent expRect = widget.add(RenderPartsHolderComponent.class);
+		expRect.add(expPack
+			);
 		final RenderPart expBgRect = new RenderPart();
-		expBgRect.setRenderMaterial(BasicRenderMaterials.ARMOR_MATERIAL);
 		expBgRect.setColor(Color.WHITE);
 		expBgRect.setSprite(new Rectangle(START_X + .2f, 0.0f, 0.25f * SCALE, .25f));
 		expBgRect.setSource(new Rectangle(0, 600f / 1024f, 300f / 1024f, 300f / 1024));
-		expRect.add(expBgRect);
+		expPack.add(expBgRect);
 
 		final RenderPart expBarRect = new RenderPart();
-		expBarRect.setRenderMaterial(BasicRenderMaterials.ARMOR_MATERIAL);
 		expBarRect.setColor(Color.WHITE);
-		expRect.add(expBarRect);
+		expPack.add(expBarRect);
 
-		final RenderPart rect = widget.get(RenderPartsHolderComponent.class).get(1);
+		final RenderPart rect = expPack.get(1);
 		rect.setSprite(new Rectangle(START_X + .2f, 0.0f, 0.25f * SCALE, .25f * 0f));
 		rect.setSource(new Rectangle(0f / 1024f, 0f, 300f / 1024f, 0f));
 
@@ -38,7 +39,7 @@ public class BasicExpWidget extends ExpBarWidget {
 	@Override
 	public void update() {
 		float percent = .4f;
-		final RenderPart rect = widget.get(RenderPartsHolderComponent.class).get(1);
+		final RenderPart rect = expPack.get(1);
 		Color color = new Color(.45f, .83f, .80f, 1f);
 		rect.setColor(Color.WHITE);
 		rect.setSprite(new Rectangle(START_X +.2f, 0f, 0.25f * SCALE, .25f * percent));
