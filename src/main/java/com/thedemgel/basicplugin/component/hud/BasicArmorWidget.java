@@ -7,14 +7,14 @@ import org.spout.api.gui.component.RenderPartsHolderComponent;
 import org.spout.api.gui.render.RenderPart;
 import org.spout.api.gui.render.RenderPartPack;
 import org.spout.api.math.Rectangle;
-import org.spout.vanilla.component.player.HUDComponent;
-import org.spout.vanilla.component.player.hud.ArmorWidget;
+import org.spout.vanilla.component.entity.player.HUD;
+import org.spout.vanilla.component.entity.player.hud.ArmorWidget;
 
 public class BasicArmorWidget extends ArmorWidget {
 	private RenderPartPack expPack = new RenderPartPack(BasicRenderMaterials.ARMOR_MATERIAL);
 
 	@Override
-	public void init(Widget armor, HUDComponent hud) {
+	public void init(Widget armor, HUD hud) {
 		super.init(armor, hud);
 		final RenderPartsHolderComponent expRect = widget.add(RenderPartsHolderComponent.class);
 		expRect.add(expPack);

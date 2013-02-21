@@ -1,7 +1,10 @@
 package com.thedemgel.basicplugin;
 
 import com.thedemgel.basicplugin.commands.PlayerCommands;
+import com.thedemgel.basicplugin.resourcebundle.BasicBundles;
 import com.thedemgel.basicplugin.world.generator.darkdesert.DarkDesertGenerator;
+import java.util.Locale;
+import java.util.ResourceBundle;
 import java.util.logging.Level;
 import org.spout.api.Engine;
 import org.spout.api.chat.ChatArguments;
@@ -50,12 +53,17 @@ public class BasicPlugin extends CommonPlugin {
 
 	@Override
 	public void onLoad() {
-		this.instance = this;
+		instance = this;
 		((PluginLogger) getLogger()).setTag(new ChatArguments(ChatStyle.RESET, "[", ChatStyle.GOLD, "BasicPlugin", ChatStyle.RESET, "] "));
 		engine = getEngine();
 		config = new BasicConfiguration(getDataFolder());
 		config.load();
 		getLogger().info("loaded");
+		
+		BasicBundles bb = new BasicBundles();
+		ResourceBundle rb = bb.getBundle("ptest", Locale.ENGLISH);
+		getLogger().info(rb.getString("name"));
+		
 	}
 
 	@Override
