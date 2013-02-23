@@ -1,4 +1,4 @@
-package com.thedemgel.basicplugin;
+package com.thedemgel.basicplugin.configuration;
 
 import java.io.File;
 import java.util.Collection;

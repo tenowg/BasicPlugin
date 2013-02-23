@@ -31,6 +31,8 @@ public class PlayerListener implements Listener {
 	//HUDComponent HUD = player.add(HUDComponent.class);
 	//HUD.setDefault(BasicArmorWidget.class);
 	//HUD.setDefault(BasicExpWidget.class);
+	
+	player.sendMessage(plugin.getLang().getString("name"));
     }
 
     @EventHandler(order = Order.EARLY)

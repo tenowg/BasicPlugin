@@ -1,8 +1,10 @@
 package com.thedemgel.basicplugin;
 
+import com.thedemgel.basicplugin.configuration.WorldConfigurationNode;
+import com.thedemgel.basicplugin.configuration.BasicConfiguration;
 import com.thedemgel.basicplugin.commands.PlayerCommands;
-import com.thedemgel.basicplugin.resourcebundle.BasicBundles;
 import com.thedemgel.basicplugin.world.generator.darkdesert.DarkDesertGenerator;
+import com.thedemgel.yamlresourcebundle.YamlResourceBundle;
 import java.util.Locale;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
@@ -50,6 +52,7 @@ public class BasicPlugin extends CommonPlugin {
 	private Engine engine;
 	private static BasicPlugin instance;
 	private BasicConfiguration config;
+	private ResourceBundle rb;
 
 	@Override
 	public void onLoad() {
@@ -59,11 +62,9 @@ public class BasicPlugin extends CommonPlugin {
 		config = new BasicConfiguration(getDataFolder());
 		config.load();
 		getLogger().info("loaded");
-		
-		BasicBundles bb = new BasicBundles();
-		ResourceBundle rb = bb.getBundle("ptest", Locale.ENGLISH);
-		getLogger().info(rb.getString("name"));
-		
+
+		YamlResourceBundle yrb = new YamlResourceBundle();
+		rb = yrb.getBundle("testb", Locale.forLanguageTag(BasicConfiguration.DEFAULT_LANG.getString()), getDataFolder());
 	}
 
 	@Override
@@ -111,33 +112,39 @@ public class BasicPlugin extends CommonPlugin {
 
 		WorldConfigurationNode worldConfig = BasicConfiguration.WORLDS.get(world);
 		boolean newWorld = world.getAge() <= 0;
-		Point point = world.getSpawnPoint().getPosition();
-		int cx = point.getBlockX() >> Chunk.BLOCKS.BITS;
-		int cz = point.getBlockZ() >> Chunk.BLOCKS.BITS;
+		if (worldConfig.LOADED_SPAWN.getBoolean() || newWorld) {
+			Point point = world.getSpawnPoint().getPosition();
+			int cx = point.getBlockX() >> Chunk.BLOCKS.BITS;
+			int cz = point.getBlockZ() >> Chunk.BLOCKS.BITS;
 
-		((VanillaProtectionService) engine.getServiceManager().getRegistration(ProtectionService.class).getProvider()).addProtection(new SpawnProtection(world.getName() + " Spawn Protection", world, point, protectionRadius));
+			((VanillaProtectionService) engine.getServiceManager().getRegistration(ProtectionService.class).getProvider()).addProtection(new SpawnProtection(world.getName() + " Spawn Protection", world, point, protectionRadius));
 
 // Load or generate spawn area
-		int effectiveRadius = newWorld ? (2 * radius) : radius;
-		loader.load(world, cx, cz, effectiveRadius, newWorld);
+			int effectiveRadius = newWorld ? (2 * radius) : radius;
+			loader.load(world, cx, cz, effectiveRadius, newWorld);
 
-		if (worldConfig.LOADED_SPAWN.getBoolean()) {
-			Entity e = world.createAndSpawnEntity(point, ObserverComponent.class, LoadOption.LOAD_GEN);
-			e.setObserver(new FlatIterator(cx, 0, cz, 16, effectiveRadius));
+			if (worldConfig.LOADED_SPAWN.getBoolean()) {
+				Entity e = world.createAndSpawnEntity(point, ObserverComponent.class, LoadOption.LOAD_GEN);
+				e.setObserver(new FlatIterator(cx, 0, cz, 16, effectiveRadius));
+			}
+
+// Grab safe spawn if newly created world.
+			if (newWorld && world.getGenerator() instanceof VanillaGenerator) {
+				Point spawn = ((VanillaGenerator) world.getGenerator()).getSafeSpawn(world);
+				world.setSpawnPoint(new Transform(spawn, Quaternion.IDENTITY, Vector3.ONE));
+			}
 		}
 
 // Grab safe spawn if newly created world.
-		if (newWorld && world.getGenerator() instanceof VanillaGenerator) {
+		/*if (newWorld && world.getGenerator() instanceof VanillaGenerator) {
 			Point spawn = ((VanillaGenerator) world.getGenerator()).getSafeSpawn(world);
 			world.setSpawnPoint(new Transform(spawn, Quaternion.IDENTITY, Vector3.ONE));
-		}
-
-// Grab safe spawn if newly created world.
-		if (newWorld && world.getGenerator() instanceof VanillaGenerator) {
-			Point spawn = ((VanillaGenerator) world.getGenerator()).getSafeSpawn(world);
-			world.setSpawnPoint(new Transform(spawn, Quaternion.IDENTITY, Vector3.ONE));
-		}
+		}*/
 
 		world.getComponentHolder().add(NetherSky.class).setHasWeather(false);
+	}
+
+	public ResourceBundle getLang() {
+		return rb;
 	}
 }

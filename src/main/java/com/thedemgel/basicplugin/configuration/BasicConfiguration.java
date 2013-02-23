@@ -1,13 +1,17 @@
-package com.thedemgel.basicplugin;
+package com.thedemgel.basicplugin.configuration;
 
+import com.thedemgel.basicplugin.BasicPlugin;
 import java.io.File;
 import java.util.logging.Level;
 import org.spout.api.exception.ConfigurationException;
+import org.spout.api.util.config.ConfigurationHolder;
 import org.spout.api.util.config.ConfigurationHolderConfiguration;
 import org.spout.api.util.config.yaml.YamlConfiguration;
 
 public class BasicConfiguration extends ConfigurationHolderConfiguration {
 
+	public static final ConfigurationHolder DEFAULT_LANG = new ConfigurationHolder("en", "lang", "default");
+	
 	public static final WorldConfiguration WORLDS = new WorldConfiguration(BasicPlugin.getInstance().getDataFolder());
 	
 	public BasicConfiguration(File dataFolder) {

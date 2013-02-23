@@ -1,5 +1,6 @@
-package com.thedemgel.basicplugin;
+package com.thedemgel.basicplugin.configuration;
 
+import com.thedemgel.basicplugin.configuration.WorldConfiguration;
 import java.util.Map;
 
 import org.spout.api.exception.ConfigurationException;
