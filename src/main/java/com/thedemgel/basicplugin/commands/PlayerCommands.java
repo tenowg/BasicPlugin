@@ -3,7 +3,7 @@ package com.thedemgel.basicplugin.commands;
 import com.thedemgel.basicplugin.BasicPlugin;
 import com.thedemgel.basicplugin.component.living.passive.Turtle;
 import org.spout.api.Client;
-import org.spout.api.Spout;
+import org.spout.api.Platform;
 import org.spout.api.command.CommandContext;
 import org.spout.api.command.CommandSource;
 import org.spout.api.command.annotated.Command;
@@ -13,7 +13,6 @@ import org.spout.api.entity.EntityPrefab;
 import org.spout.api.entity.Player;
 import org.spout.api.exception.CommandException;
 import org.spout.api.geo.discrete.Point;
-import org.spout.api.plugin.Platform;
 
 /**
  *
@@ -31,10 +30,10 @@ public class PlayerCommands {
 	public void spawnit(CommandContext args, CommandSource source) throws CommandException {
 		Player player;
 		
-		if (Spout.getPlatform() != Platform.CLIENT) {
+		if (plugin.getEngine().getPlatform() != Platform.CLIENT) {
 			player = (Player) source;
 		} else {
-			player = ((Client) Spout.getEngine()).getActivePlayer();
+			player = ((Client) plugin.getEngine()).getActivePlayer();
 		}
 		
 		final Point pos = player.getScene().getPosition();
@@ -44,8 +43,8 @@ public class PlayerCommands {
 		Entity entity = pos.getWorld().createEntity(pos, clazz);
 		entity.setSavable(true);
 		
-		if (Spout.getPlatform() == Platform.CLIENT) {
-			EntityPrefab turtlePrefab = (EntityPrefab) Spout.getFilesystem().getResource("entity://BasicPlugin/entities/turtle/turtle.sep");
+		if (plugin.getEngine().getPlatform() == Platform.CLIENT) {
+			EntityPrefab turtlePrefab = (EntityPrefab) plugin.getEngine().getFilesystem().getResource("entity://BasicPlugin/entities/turtle/turtle.sep");
 			entity = turtlePrefab.createEntity(pos);		
 		}
 		

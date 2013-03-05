@@ -13,11 +13,13 @@ public class WorldConfiguration extends YamlConfiguration {
 
 	private final Map<String, WorldConfigurationNode> worldNodes = new HashMap<String, WorldConfigurationNode>();
 	public static WorldConfigurationNode DARKDESERT;
+	public static WorldConfigurationNode LIGHTDESERT;
 
 	public WorldConfiguration(File dataFolder) {
 		super(new File(dataFolder, "worlds.yml"));
 //TODO: Allow the creation of sub-sections for configuration holders
 		DARKDESERT = get("DarkDesert").setDefaults("nether", "darkdesert");
+		LIGHTDESERT = get("lightdesert").setDefaults("normal", "darkdesert");
 	}
 
 	public Collection<WorldConfigurationNode> getAll() {

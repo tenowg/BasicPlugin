@@ -1,10 +1,11 @@
 package com.thedemgel.basicplugin;
 
-import com.thedemgel.basicplugin.configuration.WorldConfigurationNode;
-import com.thedemgel.basicplugin.configuration.BasicConfiguration;
 import com.thedemgel.basicplugin.commands.PlayerCommands;
+import com.thedemgel.basicplugin.configuration.BasicConfiguration;
+import com.thedemgel.basicplugin.configuration.WorldConfigurationNode;
 import com.thedemgel.basicplugin.world.generator.darkdesert.DarkDesertGenerator;
 import com.thedemgel.yamlresourcebundle.YamlResourceBundle;
+import java.util.ArrayList;
 import java.util.Locale;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
@@ -70,7 +71,7 @@ public class BasicPlugin extends CommonPlugin {
 	@Override
 	public void onEnable() {
 		//Commands
-		final CommandRegistrationsFactory<Class<?>> commandRegFactory = new AnnotatedCommandRegistrationFactory(new SimpleInjector(this), new SimpleAnnotatedCommandExecutorFactory());
+		final CommandRegistrationsFactory<Class<?>> commandRegFactory = new AnnotatedCommandRegistrationFactory(getEngine(), new SimpleAnnotatedCommandExecutorFactory());
 		final RootCommand root = engine.getRootCommand();
 		root.addSubCommands(this, PlayerCommands.class, commandRegFactory);
 		//root.addSubCommands(this, AdminCommands.class, commandRegFactory);
@@ -92,56 +93,63 @@ public class BasicPlugin extends CommonPlugin {
 	}
 
 	public void setupWorlds() {
-		VanillaGenerator generator = (VanillaGenerator) new DarkDesertGenerator();
-		World world = engine.loadWorld(generator.getName(), generator);
+		ArrayList<World> worlds = new ArrayList<World>();
 
-		// Apply general settings
-		final DatatableComponent data = world.getComponentHolder().getData();
-		data.put(VanillaData.GAMEMODE, GameMode.get("creative"));
-		data.put(VanillaData.DIFFICULTY, Difficulty.get("normal"));
-		data.put(VanillaData.DIMENSION, Dimension.get("nether"));
+		for (WorldConfigurationNode worldNode : BasicConfiguration.WORLDS.getAll()) {
 
-		world.addLightingManager(VanillaLighting.BLOCK_LIGHT);
-		world.addLightingManager(VanillaLighting.SKY_LIGHT);
+			VanillaGenerator generator = (VanillaGenerator) new DarkDesertGenerator();
+			World world = engine.loadWorld(worldNode.getWorldName(), generator);
+
+			// Apply general settings
+			final DatatableComponent data = world.getData();
+			data.put(VanillaData.GAMEMODE, GameMode.get("creative"));
+			data.put(VanillaData.DIFFICULTY, Difficulty.get("normal"));
+			data.put(VanillaData.DIMENSION, Dimension.get("nether"));
+
+			world.addLightingManager(VanillaLighting.BLOCK_LIGHT);
+			world.addLightingManager(VanillaLighting.SKY_LIGHT);
+
+			worlds.add(world);
+		}
 
 		final int radius = VanillaConfiguration.SPAWN_RADIUS.getInt();
 		final int protectionRadius = VanillaConfiguration.SPAWN_PROTECTION_RADIUS.getInt();
 		SpawnLoader loader = new SpawnLoader(1);
 
-		engine.getServiceManager().register(ProtectionService.class, new VanillaProtectionService(), this, ServiceManager.ServicePriority.Highest);
-
-		WorldConfigurationNode worldConfig = BasicConfiguration.WORLDS.get(world);
-		boolean newWorld = world.getAge() <= 0;
-		if (worldConfig.LOADED_SPAWN.getBoolean() || newWorld) {
-			Point point = world.getSpawnPoint().getPosition();
-			int cx = point.getBlockX() >> Chunk.BLOCKS.BITS;
-			int cz = point.getBlockZ() >> Chunk.BLOCKS.BITS;
-
-			((VanillaProtectionService) engine.getServiceManager().getRegistration(ProtectionService.class).getProvider()).addProtection(new SpawnProtection(world.getName() + " Spawn Protection", world, point, protectionRadius));
-
-// Load or generate spawn area
-			int effectiveRadius = newWorld ? (2 * radius) : radius;
-			loader.load(world, cx, cz, effectiveRadius, newWorld);
-
-			if (worldConfig.LOADED_SPAWN.getBoolean()) {
-				Entity e = world.createAndSpawnEntity(point, ObserverComponent.class, LoadOption.LOAD_GEN);
-				e.setObserver(new FlatIterator(cx, 0, cz, 16, effectiveRadius));
-			}
-
-// Grab safe spawn if newly created world.
-			if (newWorld && world.getGenerator() instanceof VanillaGenerator) {
-				Point spawn = ((VanillaGenerator) world.getGenerator()).getSafeSpawn(world);
-				world.setSpawnPoint(new Transform(spawn, Quaternion.IDENTITY, Vector3.ONE));
-			}
+		if (worlds.isEmpty()) {
+			return;
 		}
 
-// Grab safe spawn if newly created world.
-		/*if (newWorld && world.getGenerator() instanceof VanillaGenerator) {
-			Point spawn = ((VanillaGenerator) world.getGenerator()).getSafeSpawn(world);
-			world.setSpawnPoint(new Transform(spawn, Quaternion.IDENTITY, Vector3.ONE));
-		}*/
+		engine.getServiceManager().register(ProtectionService.class, new VanillaProtectionService(), this, ServiceManager.ServicePriority.Highest);
 
-		world.getComponentHolder().add(NetherSky.class).setHasWeather(false);
+		for (World world : worlds) {
+			WorldConfigurationNode worldConfig = BasicConfiguration.WORLDS.get(world);
+			boolean newWorld = world.getAge() <= 0;
+			if (worldConfig.LOADED_SPAWN.getBoolean() || newWorld) {
+				Point point = world.getSpawnPoint().getPosition();
+				int cx = point.getBlockX() >> Chunk.BLOCKS.BITS;
+				int cz = point.getBlockZ() >> Chunk.BLOCKS.BITS;
+
+				((VanillaProtectionService) engine.getServiceManager().getRegistration(ProtectionService.class).getProvider()).addProtection(new SpawnProtection(world.getName() + " Spawn Protection", world, point, protectionRadius));
+
+// Load or generate spawn area
+				int effectiveRadius = newWorld ? (2 * radius) : radius;
+				loader.load(world, cx, cz, effectiveRadius, newWorld);
+
+				if (worldConfig.LOADED_SPAWN.getBoolean()) {
+					Entity e = world.createAndSpawnEntity(point, LoadOption.LOAD_GEN, ObserverComponent.class);
+					e.setObserver(new FlatIterator(cx, 0, cz, 16, effectiveRadius));
+				}
+
+// Grab safe spawn if newly created world.
+				if (newWorld && world.getGenerator() instanceof VanillaGenerator) {
+					Point spawn = ((VanillaGenerator) world.getGenerator()).getSafeSpawn(world);
+					world.setSpawnPoint(new Transform(spawn, Quaternion.IDENTITY, Vector3.ONE));
+				}
+			}
+
+			world.add(NetherSky.class).setHasWeather(false);
+		}
 	}
 
 	public ResourceBundle getLang() {
