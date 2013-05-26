@@ -36,7 +36,7 @@ public class PlayerListener implements Listener {
         if (plugin.getEngine().getPlatform() != Platform.CLIENT) {
             return;
         }
-        Player player = ((Client) plugin.getEngine()).getActivePlayer();
+        Player player = ((Client) plugin.getEngine()).getPlayer();
         //HUDComponent HUD = player.add(HUDComponent.class);
 	//HUD.setDefault(BasicArmorWidget.class);
 	//HUD.setDefault(BasicExpWidget.class);

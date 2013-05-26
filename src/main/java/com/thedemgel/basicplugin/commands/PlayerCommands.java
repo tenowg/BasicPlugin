@@ -33,7 +33,7 @@ public class PlayerCommands {
 		if (plugin.getEngine().getPlatform() != Platform.CLIENT) {
 			player = (Player) source;
 		} else {
-			player = ((Client) plugin.getEngine()).getActivePlayer();
+			player = ((Client) plugin.getEngine()).getPlayer();
 		}
 		
 		final Point pos = player.getScene().getPosition();
