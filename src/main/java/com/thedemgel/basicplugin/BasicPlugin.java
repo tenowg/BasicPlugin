@@ -64,8 +64,7 @@ public class BasicPlugin extends CommonPlugin {
 		config.load();
 		getLogger().info("loaded");
 
-		YamlResourceBundle yrb = new YamlResourceBundle();
-		rb = yrb.getBundle("testb", Locale.forLanguageTag(BasicConfiguration.DEFAULT_LANG.getString()), getDataFolder());
+		rb = YamlResourceBundle.getBundle("lang.test", Locale.forLanguageTag(BasicConfiguration.DEFAULT_LANG.getString()), getDataFolder());
 	}
 
 	@Override

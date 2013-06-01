@@ -44,7 +44,7 @@ public class PlayerCommands {
 		entity.setSavable(true);
 		
 		if (plugin.getEngine().getPlatform() == Platform.CLIENT) {
-			EntityPrefab turtlePrefab = (EntityPrefab) plugin.getEngine().getFilesystem().getResource("entity://BasicPlugin/entities/turtle/turtle.sep");
+			EntityPrefab turtlePrefab = (EntityPrefab) plugin.getEngine().getFileSystem().getResource("entity://BasicPlugin/entities/turtle/turtle.sep");
 			entity = turtlePrefab.createEntity(pos);		
 		}
 		

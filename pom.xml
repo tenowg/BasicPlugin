@@ -22,7 +22,7 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<currentYear>2013</currentYear>
 		<spoutVersion>dev-SNAPSHOT</spoutVersion>
-		<vanillaVersion>1.4.7-SNAPSHOT</vanillaVersion>
+		<vanillaVersion>1.5.2-SNAPSHOT</vanillaVersion>
 		<buildNumber>0</buildNumber>
 		<mainClass>com.thedemgel.basicplugin.BasicPlugin</mainClass>
 	</properties>
