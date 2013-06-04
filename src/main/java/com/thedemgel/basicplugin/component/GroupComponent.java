@@ -2,7 +2,7 @@
 package com.thedemgel.basicplugin.component;
 
 import java.util.UUID;
-import org.spout.api.component.type.EntityComponent;
+import org.spout.api.component.entity.EntityComponent;
 
 
 public class GroupComponent extends EntityComponent {

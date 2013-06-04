@@ -4,7 +4,7 @@ import com.thedemgel.basicplugin.BasicPlugin;
 import com.thedemgel.basicplugin.component.living.passive.Turtle;
 import org.spout.api.Client;
 import org.spout.api.Platform;
-import org.spout.api.command.CommandContext;
+import org.spout.api.command.CommandArguments;
 import org.spout.api.command.CommandSource;
 import org.spout.api.command.annotated.Command;
 import org.spout.api.component.Component;
@@ -27,7 +27,7 @@ public class PlayerCommands {
 	}
 
 	@Command(aliases = "spawnit", usage = "", desc = "spawn a turtle", min = 0, max = 0)
-	public void spawnit(CommandContext args, CommandSource source) throws CommandException {
+	public void spawnit(CommandSource source, CommandArguments args) throws CommandException {
 		Player player;
 		
 		if (plugin.getEngine().getPlatform() != Platform.CLIENT) {

@@ -2,7 +2,7 @@ package com.thedemgel.basicplugin.component.living.passive;
 
 import org.spout.api.entity.Entity;
 import org.spout.api.entity.Player;
-import org.spout.api.event.player.PlayerInteractEvent.Action;
+import org.spout.api.event.entity.EntityInteractEvent;
 import org.spout.api.inventory.ItemStack;
 import org.spout.vanilla.VanillaPlugin;
 import org.spout.vanilla.component.entity.living.Living;
@@ -17,7 +17,6 @@ import org.spout.vanilla.protocol.entity.creature.CreatureType;
  * A component that identifies the entity as a Chicken.
  */
 public class Turtle extends Living implements Passive {
-
 	@Override
 	public void onAttached() {
 		super.onAttached();
@@ -28,12 +27,14 @@ public class Turtle extends Living implements Passive {
 		dropComponent.addXpDrop((short) (getRandom().nextInt(3) + 1));
 
 		if (getAttachedCount() == 1) {
-			getOwner().add(Health.class).setSpawnHealth(10);
+			//getOwner().add(Health.class).setSpawnHealth(10);
 		}
 	}
 	
 	@Override
-	public void onInteract(Action action, Entity source) {
-		((Player)source).sendMessage("Hit a Turtle");
+	public void onInteract(EntityInteractEvent event) {
+		if (event.getEntity() instanceof Player) {
+			((Player)event.getEntity()).sendMessage("Hit a Turtle");
+		}
 	}
 }

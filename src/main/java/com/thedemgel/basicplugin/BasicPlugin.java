@@ -10,15 +10,9 @@ import java.util.Locale;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import org.spout.api.Engine;
-import org.spout.api.chat.ChatArguments;
-import org.spout.api.chat.style.ChatStyle;
-import org.spout.api.command.CommandRegistrationsFactory;
-import org.spout.api.command.RootCommand;
-import org.spout.api.command.annotated.AnnotatedCommandRegistrationFactory;
-import org.spout.api.command.annotated.SimpleAnnotatedCommandExecutorFactory;
-import org.spout.api.command.annotated.SimpleInjector;
-import org.spout.api.component.impl.DatatableComponent;
-import org.spout.api.component.impl.ObserverComponent;
+import org.spout.api.command.annotated.AnnotatedCommandExecutorFactory;
+import org.spout.api.component.DatatableComponent;
+import org.spout.api.component.entity.ObserverComponent;
 import org.spout.api.entity.Entity;
 import org.spout.api.geo.LoadOption;
 import org.spout.api.geo.World;
@@ -32,6 +26,7 @@ import org.spout.api.plugin.PluginLogger;
 import org.spout.api.plugin.ServiceManager;
 import org.spout.api.plugin.services.ProtectionService;
 import org.spout.api.util.FlatIterator;
+import org.spout.vanilla.ChatStyle;
 import org.spout.vanilla.component.world.sky.NetherSky;
 import org.spout.vanilla.data.Difficulty;
 import org.spout.vanilla.data.Dimension;
@@ -58,7 +53,7 @@ public class BasicPlugin extends CommonPlugin {
 	@Override
 	public void onLoad() {
 		instance = this;
-		((PluginLogger) getLogger()).setTag(new ChatArguments(ChatStyle.RESET, "[", ChatStyle.GOLD, "BasicPlugin", ChatStyle.RESET, "] "));
+		((PluginLogger) getLogger()).setTag(ChatStyle.RESET + "[" + ChatStyle.GOLD + "BasicPlugin" + ChatStyle.RESET + "] ");
 		engine = getEngine();
 		config = new BasicConfiguration(getDataFolder());
 		config.load();
@@ -70,9 +65,10 @@ public class BasicPlugin extends CommonPlugin {
 	@Override
 	public void onEnable() {
 		//Commands
-		final CommandRegistrationsFactory<Class<?>> commandRegFactory = new AnnotatedCommandRegistrationFactory(getEngine(), new SimpleAnnotatedCommandExecutorFactory());
-		final RootCommand root = engine.getRootCommand();
-		root.addSubCommands(this, PlayerCommands.class, commandRegFactory);
+		//final CommandRegistrationsFactory<Class<?>> commandRegFactory = new AnnotatedCommandRegistrationFactory(getEngine(), new SimpleAnnotatedCommandExecutorFactory());
+		//final RootCommand root = engine.getRootCommand();
+		AnnotatedCommandExecutorFactory.create(new PlayerCommands(this), engine.getCommandManager().getCommand("bp"));
+		//root.addSubCommands(this, PlayerCommands.class, commandRegFactory);
 		//root.addSubCommands(this, AdminCommands.class, commandRegFactory);
 
 		engine.getEventManager().registerEvents(new PlayerListener(this), this);
@@ -100,7 +96,7 @@ public class BasicPlugin extends CommonPlugin {
 			World world = engine.loadWorld(worldNode.getWorldName(), generator);
 
 			// Apply general settings
-			final DatatableComponent data = world.getData();
+			final DatatableComponent data = world.getDatatable();
 			data.put(VanillaData.GAMEMODE, GameMode.get("creative"));
 			data.put(VanillaData.DIFFICULTY, Difficulty.get("normal"));
 			data.put(VanillaData.DIMENSION, Dimension.get("nether"));

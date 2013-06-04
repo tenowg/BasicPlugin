@@ -2,8 +2,8 @@ package com.thedemgel.basicplugin.component.hud;
 
 import com.thedemgel.basicplugin.data.BasicRenderMaterials;
 import java.awt.Color;
+import org.spout.api.component.widget.RenderPartPacksComponent;
 import org.spout.api.gui.Widget;
-import org.spout.api.gui.component.RenderPartsHolderComponent;
 import org.spout.api.gui.render.RenderPart;
 import org.spout.api.gui.render.RenderPartPack;
 import org.spout.api.math.Rectangle;
@@ -16,7 +16,7 @@ public class BasicExpWidget extends ExpBarWidget {
 	@Override
 	public void init(Widget armor, HUD hud) {
 		super.init(armor, hud);
-		final RenderPartsHolderComponent expRect = widget.add(RenderPartsHolderComponent.class);
+		final RenderPartPacksComponent expRect = widget.add(RenderPartPacksComponent.class);
 		expRect.add(expPack
 			);
 		final RenderPart expBgRect = new RenderPart();
