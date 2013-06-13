@@ -21,10 +21,10 @@ import org.spout.api.geo.discrete.Point;
 import org.spout.api.geo.discrete.Transform;
 import org.spout.api.math.Quaternion;
 import org.spout.api.math.Vector3;
-import org.spout.api.plugin.CommonPlugin;
+import org.spout.api.plugin.Plugin;
 import org.spout.api.plugin.PluginLogger;
-import org.spout.api.plugin.ServiceManager;
 import org.spout.api.plugin.services.ProtectionService;
+import org.spout.api.plugin.services.ServiceManager;
 import org.spout.api.util.FlatIterator;
 import org.spout.vanilla.ChatStyle;
 import org.spout.vanilla.component.world.sky.NetherSky;
@@ -43,7 +43,7 @@ import org.spout.vanilla.world.lighting.VanillaLighting;
  *
  * @author Craig <tenowg at thedemgel.com>
  */
-public class BasicPlugin extends CommonPlugin {
+public class BasicPlugin extends Plugin {
 
 	private Engine engine;
 	private static BasicPlugin instance;
