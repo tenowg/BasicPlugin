@@ -21,7 +21,7 @@
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<currentYear>2013</currentYear>
-		<spoutVersion>dev-SNAPSHOT</spoutVersion>
+		<spoutVersion>1.0.0-SNAPSHOT</spoutVersion>
 		<vanillaVersion>1.5.2-SNAPSHOT</vanillaVersion>
 		<buildNumber>0</buildNumber>
 		<mainClass>com.thedemgel.basicplugin.BasicPlugin</mainClass>
@@ -43,7 +43,7 @@
 		<!-- Provided by third-party -->
 		<dependency>
 			<groupId>org.spout</groupId>
-			<artifactId>spoutapi</artifactId>
+			<artifactId>spout-api</artifactId>
 			<version>${spoutVersion}</version>
 			<scope>provided</scope>
 		</dependency>

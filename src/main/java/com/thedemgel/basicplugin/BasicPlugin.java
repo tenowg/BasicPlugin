@@ -10,9 +10,10 @@ import java.util.Locale;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import org.spout.api.Engine;
+import org.spout.api.Server;
 import org.spout.api.command.annotated.AnnotatedCommandExecutorFactory;
-import org.spout.api.component.DatatableComponent;
 import org.spout.api.component.entity.ObserverComponent;
+import org.spout.api.datatable.ManagedMap;
 import org.spout.api.entity.Entity;
 import org.spout.api.geo.LoadOption;
 import org.spout.api.geo.World;
@@ -35,7 +36,6 @@ import org.spout.vanilla.data.VanillaData;
 import org.spout.vanilla.data.configuration.VanillaConfiguration;
 import org.spout.vanilla.service.VanillaProtectionService;
 import org.spout.vanilla.service.protection.SpawnProtection;
-import org.spout.vanilla.util.thread.SpawnLoader;
 import org.spout.vanilla.world.generator.VanillaGenerator;
 import org.spout.vanilla.world.lighting.VanillaLighting;
 
@@ -45,7 +45,7 @@ import org.spout.vanilla.world.lighting.VanillaLighting;
  */
 public class BasicPlugin extends Plugin {
 
-	private Engine engine;
+	//private Engine engine;
 	private static BasicPlugin instance;
 	private BasicConfiguration config;
 	private ResourceBundle rb;
@@ -93,10 +93,10 @@ public class BasicPlugin extends Plugin {
 		for (WorldConfigurationNode worldNode : BasicConfiguration.WORLDS.getAll()) {
 
 			VanillaGenerator generator = (VanillaGenerator) new DarkDesertGenerator();
-			World world = engine.loadWorld(worldNode.getWorldName(), generator);
+			World world = ((Server) getEngine()).loadWorld(worldNode.getWorldName(), generator);
 
 			// Apply general settings
-			final DatatableComponent data = world.getDatatable();
+			final ManagedMap data = world.getData();
 			data.put(VanillaData.GAMEMODE, GameMode.get("creative"));
 			data.put(VanillaData.DIFFICULTY, Difficulty.get("normal"));
 			data.put(VanillaData.DIMENSION, Dimension.get("nether"));
@@ -109,7 +109,6 @@ public class BasicPlugin extends Plugin {
 
 		final int radius = VanillaConfiguration.SPAWN_RADIUS.getInt();
 		final int protectionRadius = VanillaConfiguration.SPAWN_PROTECTION_RADIUS.getInt();
-		SpawnLoader loader = new SpawnLoader(1);
 
 		if (worlds.isEmpty()) {
 			return;
@@ -129,7 +128,6 @@ public class BasicPlugin extends Plugin {
 
 // Load or generate spawn area
 				int effectiveRadius = newWorld ? (2 * radius) : radius;
-				loader.load(world, cx, cz, effectiveRadius, newWorld);
 
 				if (worldConfig.LOADED_SPAWN.getBoolean()) {
 					Entity e = world.createAndSpawnEntity(point, LoadOption.LOAD_GEN, ObserverComponent.class);

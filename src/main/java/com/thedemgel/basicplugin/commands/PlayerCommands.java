@@ -6,7 +6,7 @@ import org.spout.api.Client;
 import org.spout.api.Platform;
 import org.spout.api.command.CommandArguments;
 import org.spout.api.command.CommandSource;
-import org.spout.api.command.annotated.Command;
+import org.spout.api.command.annotated.CommandDescription;
 import org.spout.api.component.Component;
 import org.spout.api.entity.Entity;
 import org.spout.api.entity.EntityPrefab;
@@ -26,7 +26,7 @@ public class PlayerCommands {
 		this.plugin = instance;
 	}
 
-	@Command(aliases = "spawnit", usage = "", desc = "spawn a turtle", min = 0, max = 0)
+	@CommandDescription(aliases = "spawnit", usage = "", desc = "spawn a turtle")
 	public void spawnit(CommandSource source, CommandArguments args) throws CommandException {
 		Player player;
 		
@@ -36,7 +36,7 @@ public class PlayerCommands {
 			player = ((Client) plugin.getEngine()).getPlayer();
 		}
 		
-		final Point pos = player.getScene().getPosition();
+		final Point pos = player.getPhysics().getPosition();
 		
 		Class<? extends Component> clazz = Turtle.class;
 		
