@@ -9,10 +9,9 @@ import java.util.ArrayList;
 import java.util.Locale;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
-import org.spout.api.Engine;
 import org.spout.api.Server;
 import org.spout.api.command.annotated.AnnotatedCommandExecutorFactory;
-import org.spout.api.component.entity.ObserverComponent;
+import org.spout.api.component.entity.NetworkComponent;
 import org.spout.api.datatable.ManagedMap;
 import org.spout.api.entity.Entity;
 import org.spout.api.geo.LoadOption;
@@ -130,8 +129,8 @@ public class BasicPlugin extends Plugin {
 				int effectiveRadius = newWorld ? (2 * radius) : radius;
 
 				if (worldConfig.LOADED_SPAWN.getBoolean()) {
-					Entity e = world.createAndSpawnEntity(point, LoadOption.LOAD_GEN, ObserverComponent.class);
-					e.setObserver(new FlatIterator(cx, 0, cz, 16, effectiveRadius));
+					Entity e = world.createAndSpawnEntity(point, LoadOption.LOAD_GEN, NetworkComponent.class);
+					e.get(NetworkComponent.class).setObserver(new FlatIterator(cx, 0, cz, 16, effectiveRadius));
 				}
 
 // Grab safe spawn if newly created world.

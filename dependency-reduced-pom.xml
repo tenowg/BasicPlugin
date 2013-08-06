@@ -85,27 +85,31 @@
       <id>spout-repo</id>
       <url>http://repo.spout.org</url>
     </repository>
+    <repository>
+      <id>demgel-repo</id>
+      <url>http://repository-tenowg.forge.cloudbees.com/release</url>
+    </repository>
   </repositories>
   <dependencies>
     <dependency>
       <groupId>org.spout</groupId>
-      <artifactId>spoutapi</artifactId>
-      <version>dev-SNAPSHOT</version>
+      <artifactId>spout-api</artifactId>
+      <version>1.0.0-SNAPSHOT</version>
       <scope>provided</scope>
     </dependency>
     <dependency>
       <groupId>org.spout</groupId>
       <artifactId>vanilla</artifactId>
-      <version>1.5.2-SNAPSHOT</version>
+      <version>1.6.2-SNAPSHOT</version>
       <scope>compile</scope>
     </dependency>
   </dependencies>
   <properties>
-    <vanillaVersion>1.5.2-SNAPSHOT</vanillaVersion>
+    <vanillaVersion>1.6.2-SNAPSHOT</vanillaVersion>
     <buildNumber>0</buildNumber>
     <mainClass>com.thedemgel.basicplugin.BasicPlugin</mainClass>
     <currentYear>2013</currentYear>
-    <spoutVersion>dev-SNAPSHOT</spoutVersion>
+    <spoutVersion>1.0.0-SNAPSHOT</spoutVersion>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
   </properties>
 </project>
