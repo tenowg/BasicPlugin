@@ -17,11 +17,11 @@ import org.spout.api.generator.biome.selector.RidgedMultiRangeLayer;
 import org.spout.api.geo.World;
 import org.spout.api.geo.cuboid.Chunk;
 import org.spout.api.geo.discrete.Point;
-import org.spout.api.math.GenericMath;
-import org.spout.api.math.Vector3;
 import org.spout.api.util.LogicUtil;
 import org.spout.api.util.cuboid.CuboidBlockMaterialBuffer;
 import org.spout.api.util.map.TIntPairObjectHashMap;
+import org.spout.math.GenericMath;
+import org.spout.math.vector.Vector3;
 import org.spout.vanilla.data.Climate;
 import org.spout.vanilla.material.VanillaMaterials;
 import org.spout.vanilla.material.block.Liquid;
@@ -271,14 +271,14 @@ public class DarkDesertGenerator extends VanillaBiomeGenerator {
 			addElement(VanillaBiomes.RIVER, 0.16f, 1);
 // jungle
 		/*final BiomeSelectorLayer basicJungle =
-			hills.clone().
-			addElement(VanillaBiomes.JUNGLE, -1, 0.5f).
-			addElement(VanillaBiomes.JUNGLE_HILLS, 0.5f, 1);
-// jungle land
-		final BiomeSelectorLayer jungle =
-			rivers.clone().
-			addElement(basicJungle, -1, 0.16f).
-			addElement(VanillaBiomes.RIVER, 0.16f, 1);*/
+		 hills.clone().
+		 addElement(VanillaBiomes.JUNGLE, -1, 0.5f).
+		 addElement(VanillaBiomes.JUNGLE_HILLS, 0.5f, 1);
+		 // jungle land
+		 final BiomeSelectorLayer jungle =
+		 rivers.clone().
+		 addElement(basicJungle, -1, 0.16f).
+		 addElement(VanillaBiomes.RIVER, 0.16f, 1);*/
 // plains
 		final BiomeSelectorLayer plains =
 			rivers.clone().
@@ -324,12 +324,12 @@ public class DarkDesertGenerator extends VanillaBiomeGenerator {
 //
 // mushroom
 		/*final BiomeSelectorLayer mushroom =
-			new PerlinRangeLayer(11).
-			setOctaveCount(2).
-			setFrequency(0.004 / scale).
-			addElement(VanillaBiomes.OCEAN, -1, 0.75f).
-			addElement(VanillaBiomes.MUSHROOM_SHORE, 0.75f, 0.85f).
-			addElement(VanillaBiomes.MUSHROOM, 0.85f, 1);*/
+		 new PerlinRangeLayer(11).
+		 setOctaveCount(2).
+		 setFrequency(0.004 / scale).
+		 addElement(VanillaBiomes.OCEAN, -1, 0.75f).
+		 addElement(VanillaBiomes.MUSHROOM_SHORE, 0.75f, 0.85f).
+		 addElement(VanillaBiomes.MUSHROOM, 0.85f, 1);*/
 // shore
 		final BiomeSelectorLayer shore =
 			rivers.clone().
